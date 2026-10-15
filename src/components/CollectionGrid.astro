@@ -1,0 +1,152 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Media from './Media.astro';
+import { formatDate, readingTime } from '../lib/content';
+interface Props {
+  items: (CollectionEntry<'news'> | CollectionEntry<'projects'>)[];
+  type: 'news' | 'projects';
+  filters?: boolean;
+}
+const { items, type, filters = false } = Astro.props;
+const categories = [...new Set(items.map((item) => item.data.category))];
+---
+
+<div data-collection class:list={['collection-browser', `collection-${type}`]}>
+  {filters && (
+    <div class="filter-bar" data-enhanced hidden>
+      <div class="filters" role="group" aria-label="Filter kategori">
+        <button
+          type="button"
+          class="filter active"
+          data-filter="Semua"
+          aria-pressed="true"
+        >
+          Semua
+        </button>
+        {categories.map((category) => (
+          <button
+            type="button"
+            class="filter"
+            data-filter={category}
+            aria-pressed="false"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+      {type === 'news' && (
+        <label class="search-label">
+          <span class="sr-only">Cari artikel</span>
+          <input
+            type="search"
+            data-search
+            placeholder="Cari artikel…"
+            aria-label="Cari artikel"
+          />
+        </label>
+      )}
+    </div>
+  )}
+  <p class="result-count" data-count aria-live="polite" hidden></p>
+  <div class="collection-grid">
+    {items.map((item, index) => (
+      <article
+        class:list={['editorial-card', { 'featured-entry': index === 0 }]}
+        data-item
+        data-category={item.data.category}
+        data-search-text={`${item.data.title} ${item.data.description}`}
+      >
+        <a
+          href={`/${type === 'news' ? 'berita' : 'proyek'}/${item.id}`}
+          class="card-image"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <Media
+            kind={item.data.image}
+            sizes={
+              items.length === 2
+                ? '(max-width: 760px) calc(100vw - 40px), 46vw'
+                : '(max-width: 760px) calc(100vw - 40px), 30vw'
+            }
+          />
+        </a>
+        <div class="card-copy">
+          <div class="card-meta">
+            <span>{item.data.category}</span>
+            <span>CONTOH KONTEN</span>
+          </div>
+          <h3>
+            <a href={`/${type === 'news' ? 'berita' : 'proyek'}/${item.id}`}>
+              {item.data.title}
+              <span aria-hidden="true">↗</span>
+            </a>
+          </h3>
+          <p>{item.data.description}</p>
+          {item.collection === 'news' && (
+            <small>
+              {formatDate(item.data.date)} · {readingTime(item.body)} menit baca
+            </small>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="empty-state" data-empty hidden>
+    <h3>Belum ada hasil yang sesuai.</h3>
+    <p>Coba kata kunci lain atau tampilkan semua kategori.</p>
+    <button type="button" class="button outline" data-reset>
+      Reset pencarian
+    </button>
+  </div>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLElement>('[data-collection]')
+    .forEach((root) => {
+      const controls = root.querySelector<HTMLElement>('[data-enhanced]');
+      if (!controls) return;
+      controls.hidden = false;
+      const input = root.querySelector<HTMLInputElement>('[data-search]');
+      const buttons = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+      const items = root.querySelectorAll<HTMLElement>('[data-item]');
+      let category = 'Semua';
+      function update() {
+        let count = 0;
+        items.forEach((item) => {
+          const visible =
+            (category === 'Semua' || item.dataset.category === category) &&
+            (item.dataset.searchText ?? '')
+              .toLocaleLowerCase('id-ID')
+              .includes((input?.value ?? '').trim().toLocaleLowerCase('id-ID'));
+          item.hidden = !visible;
+          if (visible) count++;
+        });
+        const empty = root.querySelector<HTMLElement>('[data-empty]');
+        if (empty) empty.hidden = count > 0;
+        const result = root.querySelector<HTMLElement>('[data-count]');
+        if (result) {
+          result.hidden = false;
+          result.textContent = `${count} hasil ditampilkan`;
+        }
+        buttons.forEach((button) => {
+          const active = button.dataset.filter === category;
+          button.setAttribute('aria-pressed', String(active));
+          button.classList.toggle('active', active);
+        });
+      }
+      buttons.forEach((button) =>
+        button.addEventListener('click', () => {
+          category = button.dataset.filter ?? 'Semua';
+          update();
+        }),
+      );
+      input?.addEventListener('input', update);
+      root.querySelector('[data-reset]')?.addEventListener('click', () => {
+        category = 'Semua';
+        if (input) input.value = '';
+        update();
+        buttons[0]?.focus();
+      });
+    });
+</script>

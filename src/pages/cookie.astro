@@ -1,0 +1,89 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+---
+
+<SiteLayout title="Pengaturan Cookie">
+  <PageIntro
+    eyebrow="Cookie"
+    title="Preferensi Anda. Pilihan yang jelas."
+    description="Analytics belum diaktifkan. Tidak ada pelacak pihak ketiga yang dimuat pada versi ini."
+  />
+  <section class="wrap section utility-layout">
+    <aside class="utility-navigation">
+      <span class="eyebrow">KENDALI DI PERANGKAT ANDA</span>
+      <p>Atur preferensi untuk kunjungan berikutnya.</p>
+      <nav aria-label="Informasi cookie">
+        <a href="/privasi">Kebijakan privasi ↗</a>
+        <a href="/kontak">Hubungi kami ↗</a>
+      </nav>
+    </aside>
+    <div class="legal-content">
+      <p class="notice">
+        Dokumen cookie final menunggu peninjauan. Kontrol ini menyiapkan
+        preferensi untuk integrasi mendatang.
+      </p>
+      <h2>Pengaturan analytics</h2>
+      <p>
+        Saat penyedia analytics tersedia, data analytics hanya boleh diproses
+        setelah persetujuan dan kebijakan yang sesuai tersedia. Preferensi ini
+        disimpan di perangkat Anda selama 180 hari.
+      </p>
+      <div class="cookie-controls" data-cookie-controls hidden>
+        <label>
+          <input type="checkbox" data-analytics /> Izinkan analytics opsional
+          saat tersedia
+        </label>
+        <div>
+          <button type="button" class="button outline" data-cookie-save>
+            Simpan preferensi
+          </button>
+        </div>
+        <p role="status" data-cookie-status></p>
+      </div>
+      <noscript>
+        <p>JavaScript dinonaktifkan. Analytics tetap tidak aktif.</p>
+      </noscript>
+      <a class="text-link" href="/privasi">
+        Status kebijakan privasi
+      </a>
+    </div>
+  </section>
+</SiteLayout>
+<script>
+  const controls = document.querySelector<HTMLElement>(
+    '[data-cookie-controls]',
+  );
+  const checkbox = document.querySelector<HTMLInputElement>('[data-analytics]');
+  const status = document.querySelector<HTMLElement>('[data-cookie-status]');
+  if (controls && checkbox && status) {
+    controls.hidden = false;
+    try {
+      const value = JSON.parse(localStorage.getItem('am-consent') || 'null');
+      checkbox.checked = Boolean(
+        value?.analytics && value?.expires > Date.now(),
+      );
+    } catch {
+      checkbox.checked = false;
+    }
+    document
+      .querySelector('[data-cookie-save]')
+      ?.addEventListener('click', () => {
+        try {
+          localStorage.setItem(
+            'am-consent',
+            JSON.stringify({
+              analytics: checkbox.checked,
+              expires: Date.now() + 180 * 86400000,
+              version: 1,
+            }),
+          );
+          status.textContent =
+            'Preferensi tersimpan pada perangkat ini. Analytics belum diaktifkan.';
+        } catch {
+          status.textContent =
+            'Preferensi tidak dapat disimpan pada perangkat ini. Analytics tetap tidak aktif.';
+        }
+      });
+  }
+</script>

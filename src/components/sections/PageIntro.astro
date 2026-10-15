@@ -1,0 +1,66 @@
+---
+import Media from '../Media.astro';
+import { ArrowDown, Sprout } from '@lucide/astro';
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+const { eyebrow, title, description } = Astro.props;
+const page = Astro.url.pathname.split('/').filter(Boolean)[0];
+const detail = Astro.url.pathname.split('/').filter(Boolean).length > 1;
+const photographic =
+  !detail && ['tentang-kami', 'operasi', 'karier'].includes(page);
+const destination = page === 'karier' ? '#lowongan' : '#page-content';
+---
+
+<section
+  class:list={[
+    'page-intro',
+    'interior-intro',
+    'wrap',
+    { 'photo-intro': photographic, 'esg-intro': page === 'keberlanjutan' },
+  ]}
+>
+  {photographic && (
+    <div class="intro-media">
+      <Media
+        kind={page === 'tentang-kami' ? 'quarry' : 'operations'}
+        hero
+        sizes="100vw"
+      />
+    </div>
+  )}
+  <div class="intro-copy">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Beranda</a>
+      <span aria-hidden="true">/</span>
+      <span>{eyebrow}</span>
+    </nav>
+    <div class="eyebrow">{eyebrow}</div>
+    <h1>{title}</h1>
+    <p>{description}</p>
+    {photographic && (
+      <a class="intro-explore" href={destination}>
+        {page === 'karier' ? 'Lihat peluang berkarier' : 'Jelajahi lebih jauh'}
+        <ArrowDown size={18} aria-hidden="true" />
+      </a>
+    )}
+  </div>
+  {page === 'keberlanjutan' && (
+    <div class="intro-esg-visual" aria-hidden="true">
+      <span class="esg-ring"></span>
+      <span class="esg-ring esg-ring-inner"></span>
+      <div>
+        <Sprout size={44} />
+        <span>
+          Bumi.
+          <br />
+          Manusia.
+          <br />
+          Masa depan.
+        </span>
+      </div>
+    </div>
+  )}
+</section>

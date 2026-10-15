@@ -1,0 +1,17 @@
+{
+  "name": "PT Ahli Maju",
+  "short_name": "Ahli Maju",
+  "lang": "id",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#EEEBDD",
+  "theme_color": "#EEEBDD",
+  "icons": [
+    {
+      "src": "/brand-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

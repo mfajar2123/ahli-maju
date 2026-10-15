@@ -1,0 +1,73 @@
+---
+import { render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageIntro from '../../components/sections/PageIntro.astro';
+import Media from '../../components/Media.astro';
+import CollectionGrid from '../../components/CollectionGrid.astro';
+import { getNews, readingTime, formatDate } from '../../lib/content';
+export async function getStaticPaths() {
+  return (await getNews()).map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const related = (await getNews())
+  .filter((item) => item.id !== article.id)
+  .slice(0, 2);
+---
+
+<SiteLayout
+  title={article.data.seoTitle ?? article.data.title}
+  description={article.data.description}
+  article={{
+    headline: article.data.title,
+    date: article.data.date.toISOString(),
+    description: article.data.description,
+  }}
+>
+  <PageIntro
+    eyebrow="Berita & Wawasan"
+    title={article.data.title}
+    description={article.data.description}
+  />
+  <div class="wrap">
+    <div class="article-meta">
+      <span>{article.data.category}</span>
+      <time datetime={article.data.date.toISOString()}>
+        {formatDate(article.data.date)}
+      </time>
+      <span>{readingTime(article.body)} menit baca</span>
+      <span>ARTIKEL CONTOH</span>
+    </div>
+    <Media hero kind={article.data.image} class="wide-media" />
+  </div>
+  <section class="wrap article-reading-layout">
+    <aside class="reading-navigation">
+      <span class="eyebrow">DALAM ARTIKEL</span>
+      <nav aria-label="Daftar isi artikel">
+        {headings
+          .filter((heading) => heading.depth === 2)
+          .map((heading) => (
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          ))}
+      </nav>
+      <a href="/berita" class="text-link">
+        Semua wawasan ↗
+      </a>
+    </aside>
+    <article class="prose article-body section" data-reveal>
+      <Content />
+      <hr />
+      <a href="/berita" class="text-link">
+        Kembali ke berita & wawasan <span aria-hidden="true">↗</span>
+      </a>
+    </article>
+  </section>
+  <section class="wrap section related-reading" data-reveal>
+    <span class="eyebrow">BACA BERIKUTNYA</span>
+    <h2>Perspektif lainnya.</h2>
+    <CollectionGrid items={related} type="news" />
+  </section>
+</SiteLayout>

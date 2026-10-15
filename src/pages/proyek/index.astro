@@ -1,0 +1,24 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageIntro from '../../components/sections/PageIntro.astro';
+import CollectionGrid from '../../components/CollectionGrid.astro';
+import ContactCTA from '../../components/sections/ContactCTA.astro';
+import { getProjects } from '../../lib/content';
+const projects = await getProjects();
+---
+
+<SiteLayout title="Proyek">
+  <PageIntro
+    eyebrow="Proyek"
+    title="Pekerjaan dengan tujuan. Proses dengan tanggung jawab."
+    description="Jelajahi struktur studi kasus dari perencanaan, pengelolaan operasi, hingga pemulihan lahan."
+  />
+  <section class="wrap section listing-section">
+    <p class="notice">
+      Seluruh studi kasus berikut merupakan contoh konten. Tidak mewakili
+      proyek, lokasi, klien, atau hasil aktual PT Ahli Maju.
+    </p>
+    <CollectionGrid items={projects} type="projects" filters />
+  </section>
+  <ContactCTA />
+</SiteLayout>

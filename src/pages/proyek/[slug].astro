@@ -1,0 +1,77 @@
+---
+import { render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageIntro from '../../components/sections/PageIntro.astro';
+import Media from '../../components/Media.astro';
+import ContactCTA from '../../components/sections/ContactCTA.astro';
+import { getProjects } from '../../lib/content';
+export async function getStaticPaths() {
+  return (await getProjects()).map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<SiteLayout title={project.data.title} description={project.data.description}>
+  <PageIntro
+    eyebrow="Proyek"
+    title={project.data.title}
+    description={project.data.description}
+  />
+  <section class="wrap">
+    <p class="notice">CONTOH STUDI KASUS · BUKAN PROYEK AKTUAL</p>
+    <Media kind={project.data.image} hero class="wide-media" />
+    <dl class="project-facts">
+      <div>
+        <dt>Kategori</dt>
+        <dd>{project.data.category}</dd>
+      </div>
+      <div>
+        <dt>Lokasi</dt>
+        <dd>Menunggu konfirmasi</dd>
+      </div>
+      <div>
+        <dt>Periode</dt>
+        <dd>Belum tersedia</dd>
+      </div>
+      <div>
+        <dt>Klien</dt>
+        <dd>Belum dipublikasikan</dd>
+      </div>
+    </dl>
+  </section>
+  <section class="wrap section two-column project-reading" data-reveal>
+    <article class="prose">
+      <Content />
+    </article>
+    <aside>
+      <span class="eyebrow">RUANG LINGKUP / CONTOH</span>
+      <ul class="editorial-list">
+        {project.data.scope.map((scope) => (
+          <li>{scope}</li>
+        ))}
+      </ul>
+      <h3>Hasil & pembelajaran</h3>
+      <p>{project.data.outcome}</p>
+    </aside>
+  </section>
+  <section class="wrap section project-gallery" data-reveal>
+    <span class="eyebrow">GALERI REFERENSI INDUSTRI</span>
+    <h2>Ruang untuk dokumentasi lapangan.</h2>
+    <p>
+      Foto aktual dengan izin publikasi akan menggantikan referensi stok
+      berikut.
+    </p>
+    <div class="gallery">
+      <Media kind="quarry" />
+      <Media kind="operations" />
+    </div>
+    <a class="text-link" href="/proyek">
+      Kembali ke seluruh proyek <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+  <ContactCTA />
+</SiteLayout>

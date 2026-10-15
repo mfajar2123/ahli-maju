@@ -1,0 +1,49 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+---
+
+<SiteLayout title="Kebijakan Privasi — Menunggu persetujuan">
+  <PageIntro
+    eyebrow="Privasi"
+    title="Kejelasan dalam pengelolaan data."
+    description="Status dokumen kebijakan privasi situs PT Ahli Maju."
+  />
+  <section class="wrap section utility-layout">
+    <aside class="utility-navigation">
+      <span class="eyebrow">INFORMASI SITUS</span>
+      <nav aria-label="Informasi privasi">
+        <a href="#dokumen">Status dokumen ↘</a>
+        <a href="#pratinjau">Versi pratinjau ↘</a>
+        <a href="/cookie">Pengaturan cookie ↗</a>
+        <a href="/kontak">Hubungi kami ↗</a>
+      </nav>
+    </aside>
+    <div class="prose legal-content">
+      <p class="notice">
+        PLACEHOLDER LEGAL · BUKAN KEBIJAKAN PRIVASI FINAL ATAU NASIHAT HUKUM
+      </p>
+      <h2 id="dokumen">Dokumen belum disetujui.</h2>
+      <p>
+        Kebijakan privasi resmi belum diberikan. Sebelum pengumpulan data
+        diaktifkan, perusahaan perlu menyetujui dokumen yang menjelaskan tujuan
+        pengolahan, jenis data, dasar yang sesuai, masa retensi, pihak penerima,
+        hak pengunjung, dan kanal kontak.
+      </p>
+      <h2 id="pratinjau">Perilaku versi pratinjau</h2>
+      <p>
+        Formulir hanya memeriksa isian di perangkat Anda. Isian tidak dikirim ke
+        server atau disimpan oleh aplikasi ini. Analytics dan pelacak pihak
+        ketiga belum dipasang. Preferensi cookie dapat disimpan secara lokal
+        pada perangkat jika Anda memilih untuk menyimpannya.
+      </p>
+      <p>
+        Pengelola hosting dapat memiliki pencatatan teknis sendiri. Rincian
+        penyedia hosting dan praktiknya perlu dimasukkan pada kebijakan final.
+      </p>
+      <a class="text-link" href="/cookie">
+        Pengaturan cookie
+      </a>
+    </div>
+  </section>
+</SiteLayout>

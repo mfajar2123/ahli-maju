@@ -1,0 +1,135 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import ContactCTA from '../components/sections/ContactCTA.astro';
+import { metrics } from '../data/site';
+import PageNav from '../components/sections/PageNav.astro';
+---
+
+<SiteLayout title="Keberlanjutan">
+  <PageIntro
+    eyebrow="Keberlanjutan"
+    title="Bertanggung jawab hari ini. Berarti untuk esok."
+    description="Lingkungan, manusia, dan tata kelola menjadi bagian dari cara kami memandang nilai jangka panjang."
+  />
+  <PageNav
+    links={[
+      { href: '#fokus', label: 'Fokus ESG' },
+      { href: '#indikator', label: 'Indikator' },
+      { href: '#laporan', label: 'Publikasi' },
+    ]}
+  />
+  <section class="wrap section" id="fokus" data-reveal>
+    <p class="notice">
+      Kerangka ESG contoh. Kebijakan, program, target, dan hasil PT Ahli Maju
+      belum diverifikasi.
+    </p>
+    <div class="esg-domains">
+      {[
+        [
+          'E',
+          'Lingkungan',
+          'Air, tanah, dan kehidupan di sekitarnya.',
+          'Kerangka pengelolaan mencakup kondisi dasar lingkungan, pemantauan air, pengelolaan material, dan perencanaan pemulihan lahan.',
+        ],
+        [
+          'S',
+          'Manusia & masyarakat',
+          'Keselamatan dan ruang untuk tumbuh bersama.',
+          'Kerangka sosial mencakup keselamatan pekerja, pengembangan kompetensi, dialog masyarakat, dan penilaian kebutuhan program.',
+        ],
+        [
+          'G',
+          'Tata kelola',
+          'Keputusan yang dapat dipertanggungjawabkan.',
+          'Kerangka tata kelola mencakup kepatuhan, pengawasan, etika bisnis, serta mekanisme pelaporan yang aman.',
+        ],
+      ].map(([letter, title, subtitle, text]) => (
+        <article>
+          <span class="domain-letter" aria-hidden="true">
+            {letter}
+          </span>
+          <div>
+            <span class="eyebrow">{title}</span>
+            <h2>{subtitle}</h2>
+            <p>{text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="subtle-surface" id="indikator">
+    <div class="wrap section">
+      <span class="eyebrow">KERANGKA PENGUKURAN</span>
+      <h2>
+        Data perlu konteks.
+        <br />
+        Komitmen perlu bukti.
+      </h2>
+      <p>
+        Setiap indikator akan dilengkapi periode, batas cakupan, metode
+        pengukuran, dan status verifikasi.
+      </p>
+      <div
+        class="metric-table"
+        tabindex="0"
+        role="region"
+        aria-label="Tabel indikator ESG, dapat digeser secara horizontal"
+      >
+        <table>
+          <caption>Kerangka indikator ESG — seluruh nilai belum diisi</caption>
+          <thead>
+            <tr>
+              <th scope="col">Indikator</th>
+              <th scope="col">Satuan</th>
+              <th scope="col">Nilai</th>
+              <th scope="col">Metode & cakupan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {metrics.map((metric) => (
+              <tr>
+                <th scope="row">{metric.name}</th>
+                <td>{metric.unit}</td>
+                <td>
+                  <span aria-label="Belum tersedia">—</span>
+                </td>
+                <td>{metric.method}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="data-note">
+        PERIODE: BELUM DITETAPKAN · SUMBER: MENUNGGU LAPORAN · VERIFIKASI: BELUM
+        TERSEDIA
+      </p>
+    </div>
+  </section>
+  <section class="wrap section" id="laporan" data-reveal>
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">PUBLIKASI</span>
+        <h2>
+          Laporan yang
+          <br />
+          membuka perspektif.
+        </h2>
+      </div>
+      <p>Dokumen dapat diunduh setelah PDF resmi disetujui dan tersedia.</p>
+    </div>
+    <div class="report-grid">
+      {['Laporan Keberlanjutan', 'Ringkasan Kinerja ESG'].map((title) => (
+        <article>
+          <span class="eyebrow">PDF / BELUM TERSEDIA</span>
+          <h3>{title}</h3>
+          <p>Periode dan dokumen menunggu persetujuan.</p>
+          <button type="button" class="button outline" disabled>
+            Dokumen belum tersedia
+          </button>
+        </article>
+      ))}
+    </div>
+  </section>
+  <ContactCTA />
+</SiteLayout>

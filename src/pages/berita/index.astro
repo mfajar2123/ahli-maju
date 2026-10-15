@@ -1,0 +1,22 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageIntro from '../../components/sections/PageIntro.astro';
+import CollectionGrid from '../../components/CollectionGrid.astro';
+import { getNews } from '../../lib/content';
+const news = await getNews();
+---
+
+<SiteLayout title="Berita & Wawasan">
+  <PageIntro
+    eyebrow="Berita & Wawasan"
+    title="Perspektif yang membuka pemahaman."
+    description="Catatan tentang keselamatan, lingkungan, dan industri sumber daya. Ruang untuk berbagi pengetahuan dan perkembangan perusahaan."
+  />
+  <section class="wrap section listing-section">
+    <p class="notice">
+      Artikel contoh untuk meninjau pengalaman editorial. Bukan berita kegiatan
+      atau kebijakan resmi PT Ahli Maju.
+    </p>
+    <CollectionGrid items={news} type="news" filters />
+  </section>
+</SiteLayout>

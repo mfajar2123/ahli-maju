@@ -1,0 +1,486 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Media from '../components/Media.astro';
+import {
+  ArrowUpRight,
+  ArrowDown,
+  Pause,
+  Play,
+  ShieldCheck,
+  Layers,
+  Sprout,
+} from '@lucide/astro';
+import { pillars } from '../data/site';
+import { getNews } from '../lib/content';
+const news = (await getNews()).slice(0, 3);
+const perspectives = ['Manusia.', 'Bumi.', 'Masa depan.'];
+const steps = [
+  {
+    title: 'Melihat lebih jauh.',
+    label: 'Perencanaan',
+    icon: Layers,
+    kind: 'quarry' as const,
+    text: 'Memahami kondisi, mengenali risiko, dan menyiapkan langkah sebelum pekerjaan dimulai.',
+  },
+  {
+    title: 'Menjaga setiap detail.',
+    label: 'Operasi',
+    icon: ShieldCheck,
+    kind: 'operations' as const,
+    text: 'Kesiapan alat, ketelitian proses, dan komunikasi yang mengutamakan keselamatan manusia.',
+  },
+  {
+    title: 'Merawat hari esok.',
+    label: 'Pascatambang',
+    icon: Sprout,
+    kind: 'quarry' as const,
+    text: 'Mempertimbangkan air, tanah, dan kehidupan setelah tambang sejak tahap perencanaan.',
+  },
+];
+---
+
+<SiteLayout title="Beranda — Menggali potensi, membangun masa depan">
+  <section class="hero immersive-hero">
+    <div class="hero-backdrop">
+      <Media hero sizes="100vw" />
+    </div>
+    <div class="hero-shade"></div>
+    <div class="hero-content wrap">
+      <p class="hero-kicker">PT AHLI MAJU · MINING & RESOURCES</p>
+      <h1>
+        <span>Menggali potensi.</span>
+        <span>Membangun</span>
+        <span class="hero-word-window">
+          <span data-hero-word>masa depan.</span>
+        </span>
+      </h1>
+      <p class="hero-description">
+        Sumber daya hari ini. Nilai untuk generasi berikutnya.
+        <br />
+        Dengan manusia dan bumi di pusat setiap langkah.
+      </p>
+      <div class="hero-actions">
+        <a href="/kontak" class="experience-button">
+          Hubungi Kami <ArrowUpRight size={20} aria-hidden="true" />
+        </a>
+        <a href="/operasi" class="hero-secondary">
+          Lihat Operasi Kami <ArrowUpRight size={18} aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+    <div class="hero-floor wrap">
+      <a href="#pendekatan">
+        Kenali pendekatan kami <ArrowDown size={18} aria-hidden="true" />
+      </a>
+      <button
+        type="button"
+        class="motion-control"
+        data-motion-toggle
+        aria-label="Jeda animasi judul"
+        aria-pressed="false"
+        hidden
+      >
+        <span data-pause-icon>
+          <Pause size={15} aria-hidden="true" />
+        </span>
+        <span data-play-icon hidden>
+          <Play size={15} aria-hidden="true" />
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <section class="perspective-section dark-chapter" id="pendekatan">
+    <div class="wrap">
+      <p class="chapter-label" data-reveal>
+        PERTAMBANGAN DENGAN PERSPEKTIF
+      </p>
+      <div class="perspective-heading" data-reveal>
+        <h2>
+          Potensi bumi.
+          <br />
+          Kemajuan bersama.
+        </h2>
+        <p>
+          Kami melihat pertambangan sebagai rangkaian keputusan yang saling
+          terhubung. Dari manusia yang bekerja, hingga nilai yang ditinggalkan.
+        </p>
+      </div>
+      <div class="perspective-selector" data-perspectives>
+        <div class="perspective-controls" aria-label="Pilih perspektif">
+          {perspectives.map((label, index) => (
+            <button
+              type="button"
+              data-perspective={index}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+              aria-controls={`perspective-${index}`}
+            >
+              {label}
+              <ArrowUpRight size={24} aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+        <div class="perspective-stage">
+          {perspectives.map((_, index) => (
+            <article
+              id={`perspective-${index}`}
+              class:list={['perspective-panel', { 'is-selected': index === 0 }]}
+              data-perspective-panel={index}
+            >
+              <Media
+                kind={index === 0 ? 'operations' : 'quarry'}
+                sizes="(max-width: 760px) 90vw, 55vw"
+              />
+              <div class="perspective-panel-copy">
+                <span class="chapter-label">
+                  {pillars[index].label.split(' / ')[1]}
+                </span>
+                <h3>{pillars[index].title}</h3>
+                <p>{pillars[index].description}</p>
+                <a
+                  href={
+                    index === 0
+                      ? '/operasi#keselamatan'
+                      : index === 1
+                        ? '/keberlanjutan'
+                        : '/tentang-kami'
+                  }
+                  class="experience-link"
+                >
+                  Jelajahi pendekatan{' '}
+                  <ArrowUpRight size={19} aria-hidden="true" />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cycle-section dark-chapter">
+    <div class="wrap">
+      <div class="cycle-heading" data-reveal>
+        <p class="chapter-label">SATU SIKLUS. TANGGUNG JAWAB YANG UTUH.</p>
+        <h2>
+          Terencana di awal.
+          <br />
+          Terjaga sampai akhir.
+        </h2>
+        <a href="/operasi" class="experience-link">
+          Jelajahi operasi <ArrowUpRight size={20} aria-hidden="true" />
+        </a>
+      </div>
+      <div class="cycle-panels" data-cycle>
+        {steps.map((step, index) => (
+          <article
+            class:list={['cycle-panel', { 'is-expanded': index === 1 }]}
+            data-cycle-panel
+          >
+            <Media kind={step.kind} sizes="(max-width: 760px) 85vw, 50vw" />
+            <div class="cycle-panel-shade"></div>
+            <div class="cycle-panel-content">
+              <span class="cycle-icon">
+                <step.icon size={24} aria-hidden="true" />
+              </span>
+              <p class="chapter-label">{step.label}</p>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              <a href="/operasi" class="experience-link">
+                Pelajari lebih lanjut{' '}
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="chapter-footnote">
+        Perspektif siklus pertambangan · komoditas dan kapabilitas aktual
+        menunggu verifikasi perusahaan.
+      </p>
+    </div>
+  </section>
+
+  <section class="earth-section dark-chapter">
+    <div class="earth-inner wrap">
+      <div class="earth-copy" data-reveal>
+        <p class="chapter-label">KEBERLANJUTAN</p>
+        <h2>
+          Yang kita kelola.
+          <br />
+          Yang kita jaga.
+        </h2>
+        <p>
+          Air. Lahan. Kehidupan di sekitarnya. Tanggung jawab dimulai jauh
+          sebelum pekerjaan pertama, dan berlanjut setelahnya.
+        </p>
+        <a href="/keberlanjutan" class="experience-button">
+          Komitmen keberlanjutan <ArrowUpRight size={20} aria-hidden="true" />
+        </a>
+      </div>
+      <div
+        class="earth-visual"
+        data-reveal
+        aria-label="Tiga fokus keberlanjutan: lingkungan, masyarakat, dan tata kelola"
+      >
+        <div class="earth-orbit orbit-one"></div>
+        <div class="earth-orbit orbit-two"></div>
+        <div class="earth-core">
+          <Sprout size={48} aria-hidden="true" />
+          <span>
+            Nilai yang
+            <br />
+            bertahan.
+          </span>
+        </div>
+        <span class="orbit-label orbit-environment">Lingkungan</span>
+        <span class="orbit-label orbit-community">Masyarakat</span>
+        <span class="orbit-label orbit-governance">Tata kelola</span>
+      </div>
+    </div>
+    <div class="earth-bottom wrap">
+      <p>Komitmen perlu dapat ditinjau.</p>
+      <span>
+        Kerangka ESG disiapkan untuk data dengan metode dan periode yang jelas.
+        Hasil terverifikasi belum tersedia.
+      </span>
+      <a href="/keberlanjutan" aria-label="Lihat kerangka indikator ESG">
+        <ArrowUpRight size={26} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  <section class="people-section dark-chapter">
+    <div class="people-image">
+      <Media kind="operations" sizes="(max-width: 760px) 100vw, 50vw" />
+    </div>
+    <div class="people-copy" data-reveal>
+      <p class="chapter-label">MENGENAL AHLI MAJU</p>
+      <h2>
+        Bumi memberi
+        <br />
+        potensi.
+        <br />
+        <span>
+          Kita memberi
+          <br />
+          arah.
+        </span>
+      </h2>
+      <p>
+        Perusahaan pertambangan Indonesia dengan perspektif jangka panjang.
+        Mengenal prinsip yang menjadi pijakan kami.
+      </p>
+      <a href="/tentang-kami" class="experience-link">
+        Tentang perusahaan <ArrowUpRight size={20} aria-hidden="true" />
+      </a>
+      <a href="/karier" class="experience-link">
+        Tumbuh bersama kami <ArrowUpRight size={20} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  <section class="insights-section dark-chapter">
+    <div class="wrap">
+      <div class="insights-heading" data-reveal>
+        <div>
+          <p class="chapter-label">BERITA & WAWASAN</p>
+          <h2>
+            Sudut pandang
+            <br />
+            yang lebih luas.
+          </h2>
+        </div>
+        <a href="/berita" class="experience-link">
+          Semua wawasan <ArrowUpRight size={20} aria-hidden="true" />
+        </a>
+      </div>
+      <div class="insight-layout">
+        <a href={`/berita/${news[0].id}`} class="insight-feature" data-reveal>
+          <Media kind="operations" sizes="(max-width: 760px) 90vw, 50vw" />
+          <div>
+            <span class="chapter-label">
+              {news[0].data.category} · ARTIKEL CONTOH
+            </span>
+            <h3>{news[0].data.title}</h3>
+            <ArrowUpRight size={28} aria-hidden="true" />
+          </div>
+        </a>
+        <div class="insight-list">
+          {news.slice(1).map((item) => (
+            <a href={`/berita/${item.id}`} data-reveal>
+              <span class="chapter-label">
+                {item.data.category} · ARTIKEL CONTOH
+              </span>
+              <h3>{item.data.title}</h3>
+              <p>{item.data.description}</p>
+              <ArrowUpRight size={24} aria-hidden="true" />
+            </a>
+          ))}
+          <a href="/proyek" class="project-teaser">
+            <span class="chapter-label">RUANG LINGKUP PROYEK</span>
+            <h3>
+              Melihat prinsip
+              <br />
+              dalam praktik.
+            </h3>
+            <p>
+              Jelajahi studi kasus contoh. Proyek aktual menunggu persetujuan.
+            </p>
+            <ArrowUpRight size={24} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="experience-cta dark-chapter">
+    <div class="wrap" data-reveal>
+      <p class="chapter-label">LANGKAH BERIKUTNYA</p>
+      <h2>
+        Masa depan besar.
+        <br />
+        Dimulai dari
+        <br />
+        percakapan.
+      </h2>
+      <a href="/kontak" class="experience-button">
+        Mari terhubung <ArrowUpRight size={22} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+</SiteLayout>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const word = document.querySelector<HTMLElement>('[data-hero-word]');
+  const toggle = document.querySelector<HTMLButtonElement>(
+    '[data-motion-toggle]',
+  );
+  const hero = document.querySelector('.immersive-hero');
+  const words = ['masa depan.', 'nilai bersama.', 'hari esok.'];
+  let current = 0;
+  let paused = false;
+  let visible = true;
+  let timer: ReturnType<typeof setTimeout>;
+  function schedule() {
+    clearTimeout(timer);
+    word?.getAnimations().forEach((animation) => animation.cancel());
+    if (reduced.matches || paused || !visible || document.hidden || !word)
+      return;
+    timer = setTimeout(async () => {
+      const departure = word.animate(
+        [
+          { transform: 'translateY(0)', opacity: 1 },
+          { transform: 'translateY(-100%)', opacity: 0 },
+        ],
+        { duration: 450, easing: 'cubic-bezier(.5,0,.5,1)' },
+      );
+      await departure.finished.catch(() => undefined);
+      if (departure.playState !== 'finished') return;
+      if (reduced.matches || paused || !visible || document.hidden) return;
+      current = (current + 1) % words.length;
+      word.textContent = words[current];
+      const arrival = word.animate(
+        [
+          { transform: 'translateY(100%)', opacity: 0 },
+          { transform: 'translateY(0)', opacity: 1 },
+        ],
+        { duration: 450, easing: 'cubic-bezier(.22,1,.36,1)' },
+      );
+      await arrival.finished.catch(() => undefined);
+      if (arrival.playState !== 'finished') return;
+      schedule();
+    }, 3400);
+  }
+  if (toggle && word) {
+    toggle.hidden = reduced.matches;
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.setAttribute(
+        'aria-label',
+        paused ? 'Lanjutkan animasi judul' : 'Jeda animasi judul',
+      );
+      toggle
+        .querySelector('[data-pause-icon]')
+        ?.toggleAttribute('hidden', paused);
+      toggle
+        .querySelector('[data-play-icon]')
+        ?.toggleAttribute('hidden', !paused);
+      schedule();
+    });
+    reduced.addEventListener('change', () => {
+      toggle.hidden = reduced.matches;
+      schedule();
+    });
+    document.addEventListener('visibilitychange', schedule);
+    if (hero && 'IntersectionObserver' in window)
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        schedule();
+      }).observe(hero);
+    else schedule();
+  }
+  const selector = document.querySelector<HTMLElement>('[data-perspectives]');
+  if (selector) {
+    selector.classList.add('is-enhanced');
+    const controls = Array.from(
+      selector.querySelectorAll<HTMLButtonElement>('[data-perspective]'),
+    );
+    const panels = Array.from(
+      selector.querySelectorAll<HTMLElement>('[data-perspective-panel]'),
+    );
+    function select(index: number) {
+      controls.forEach((button, i) =>
+        button.setAttribute('aria-pressed', String(i === index)),
+      );
+      panels.forEach((panel, i) => {
+        panel.classList.toggle('is-selected', i === index);
+        panel.inert = i !== index;
+        panel.setAttribute('aria-hidden', String(i !== index));
+      });
+    }
+    controls.forEach((button, index) => {
+      button.addEventListener('click', () => select(index));
+      button.addEventListener('keydown', (event) => {
+        if (
+          ![
+            'ArrowLeft',
+            'ArrowRight',
+            'ArrowUp',
+            'ArrowDown',
+            'Home',
+            'End',
+          ].includes(event.key)
+        )
+          return;
+        event.preventDefault();
+        const next =
+          event.key === 'Home'
+            ? 0
+            : event.key === 'End'
+              ? controls.length - 1
+              : (index +
+                  (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : -1) +
+                  controls.length) %
+                controls.length;
+        select(next);
+        controls[next].focus();
+      });
+    });
+    select(0);
+  }
+  const cycle = document.querySelector('[data-cycle]');
+  cycle
+    ?.querySelectorAll<HTMLElement>('[data-cycle-panel]')
+    .forEach((panel) => {
+      const expand = () =>
+        cycle
+          .querySelectorAll('[data-cycle-panel]')
+          .forEach((item) =>
+            item.classList.toggle('is-expanded', item === panel),
+          );
+      panel.addEventListener('pointerenter', expand);
+      panel.addEventListener('focusin', expand);
+    });
+</script>

@@ -1,0 +1,307 @@
+---
+import '../styles/global.css';
+import '../styles/experience.css';
+import '../styles/interior.css';
+import '@fontsource/manrope/latin-400.css';
+import '@fontsource/manrope/latin-500.css';
+import '@fontsource/manrope/latin-600.css';
+import '@fontsource/dm-sans/latin-500.css';
+import '@fontsource/dm-sans/latin-600.css';
+import Brand from '../components/Brand.astro';
+import { Menu, X } from '@lucide/astro';
+import { navigation, site } from '../data/site';
+interface Props {
+  title: string;
+  description?: string;
+  article?: { headline: string; date: string; description: string };
+}
+const { title, description = site.description, article } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const configured = Astro.site?.hostname !== 'example.invalid';
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: site.name,
+    url: Astro.site?.href,
+  },
+  ...(path === '/'
+    ? []
+    : [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Beranda',
+              item: Astro.site?.href,
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: title,
+              item: canonical.href,
+            },
+          ],
+        },
+      ]),
+  ...(article
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: article.headline,
+          description: article.description,
+          datePublished: article.date,
+          mainEntityOfPage: canonical.href,
+          publisher: { '@type': 'Organization', name: site.name },
+        },
+      ]
+    : []),
+];
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | PT Ahli Maju</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {!configured && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#EEEBDD" />
+    <link rel="icon" type="image/svg+xml" href="/brand-icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={`${title} | PT Ahli Maju`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta
+      property="og:image"
+      content={new URL('/social-card.png', Astro.site)}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | PT Ahli Maju`} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content={new URL('/social-card.png', Astro.site)}
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replace(/</g, '\\u003c')}
+    ></script>
+  </head>
+  <body
+    class:list={{
+      'home-experience': path === '/',
+      'interior-experience': path !== '/',
+    }}
+    data-page={path.split('/')[1] || 'home'}
+    data-detail={
+      path.split('/').filter(Boolean).length > 1 ? 'true' : undefined
+    }
+  >
+    <a class="skip-link" href="#main">
+      Langsung ke konten
+    </a>
+    <header class="site-header">
+      <div class="header-inner wrap">
+        <Brand />
+        <nav class="desktop-nav" aria-label="Navigasi utama">
+          {navigation.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <a
+          class="header-contact"
+          href="/kontak"
+          aria-current={path === '/kontak' ? 'page' : undefined}
+        >
+          Hubungi Kami <span aria-hidden="true">↗</span>
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          data-menu-open
+          aria-label="Buka menu navigasi"
+          hidden
+        >
+          Menu <Menu size={22} aria-hidden="true" />
+        </button>
+      </div>
+      <noscript>
+        <nav class="no-js-nav" aria-label="Navigasi seluler tanpa JavaScript">
+          {navigation.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a href="/kontak">Hubungi Kami</a>
+        </nav>
+      </noscript>
+    </header>
+    <dialog class="mobile-menu" aria-labelledby="menu-title">
+      <div class="menu-top">
+        <span id="menu-title">Navigasi</span>
+        <button
+          class="menu-close"
+          type="button"
+          data-menu-close
+          aria-label="Tutup menu navigasi"
+        >
+          Tutup <X size={22} aria-hidden="true" />
+        </button>
+      </div>
+      <nav aria-label="Navigasi seluler">
+        {[...navigation, { href: '/kontak', label: 'Hubungi Kami' }].map(
+          (link, index) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              <small>0{index + 1}</small>
+              {link.label}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ),
+        )}
+      </nav>
+      <p>PT Ahli Maju · Mining & Resources</p>
+    </dialog>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-top">
+          <div>
+            <Brand inverse />
+            <p>
+              Sumber daya hari ini.
+              <br />
+              Nilai untuk masa depan.
+            </p>
+          </div>
+          <div>
+            <span class="eyebrow">PERUSAHAAN</span>
+            <a href="/tentang-kami">Tentang Kami</a>
+            <a href="/operasi">Operasi</a>
+            <a href="/proyek">Proyek</a>
+          </div>
+          <div>
+            <span class="eyebrow">JELAJAHI</span>
+            <a href="/keberlanjutan">Keberlanjutan</a>
+            <a href="/berita">Berita & Wawasan</a>
+            <a href="/karier">Karier</a>
+          </div>
+          <div>
+            <span class="eyebrow">TERHUBUNG</span>
+            <a href="/kontak">Hubungi Kami ↗</a>
+            <p>
+              Detail kontak resmi
+              <br />
+              menunggu konfirmasi.
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© {new Date().getFullYear()} PT Ahli Maju</span>
+          <div>
+            <a href="/privasi">Kebijakan Privasi</a>
+            <a href="/cookie">Pengaturan Cookie</a>
+            <span>Indonesia / ID</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      const openButton =
+        document.querySelector<HTMLButtonElement>('[data-menu-open]');
+      const dialog = document.querySelector<HTMLDialogElement>('.mobile-menu');
+      if (openButton && dialog) {
+        openButton.hidden = false;
+        document.documentElement.classList.add('js');
+        openButton.addEventListener('click', () => {
+          dialog.showModal();
+          document.body.classList.add('menu-is-open');
+        });
+        document
+          .querySelector('[data-menu-close]')
+          ?.addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+        dialog.addEventListener('keydown', (event) => {
+          if (event.key !== 'Tab') return;
+          const targets = dialog.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled])',
+          );
+          const first = targets[0];
+          const last = targets[targets.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        });
+        dialog.addEventListener('close', () => {
+          document.body.classList.remove('menu-is-open');
+          openButton.focus();
+        });
+      }
+      if (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        'IntersectionObserver' in window
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+              }
+            }),
+          { threshold: 0.08 },
+        );
+        document.querySelectorAll('[data-reveal]').forEach((element) => {
+          element.classList.add('will-reveal');
+          observer.observe(element);
+        });
+      }
+      const header = document.querySelector('.site-header');
+      let queued = false;
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(() => {
+              header?.classList.toggle('scrolled', scrollY > 24);
+              queued = false;
+            });
+          }
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>

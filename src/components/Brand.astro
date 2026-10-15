@@ -1,0 +1,20 @@
+---
+interface Props {
+  inverse?: boolean;
+}
+const { inverse = false } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={['brand', { inverse }]}
+  aria-label="PT Ahli Maju — Beranda"
+>
+  <span class="brand-mark" aria-hidden="true">
+    a<span>m</span>
+    <i></i>
+  </span>
+  <span class="brand-name">
+    AHLI MAJU<small>MINING & RESOURCES</small>
+  </span>
+</a>

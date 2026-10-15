@@ -1,0 +1,163 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import ContactCTA from '../components/sections/ContactCTA.astro';
+import Media from '../components/Media.astro';
+import { pillars } from '../data/site';
+import PageNav from '../components/sections/PageNav.astro';
+---
+
+<SiteLayout title="Tentang Kami">
+  <PageIntro
+    eyebrow="Tentang Kami"
+    title="Berpijak pada bumi. Berorientasi pada manusia."
+    description="Mengenal PT Ahli Maju, prinsip yang kami pegang, dan arah yang ingin kami bangun bersama."
+  />
+  <PageNav
+    links={[
+      { href: '#page-content', label: 'Profil perusahaan' },
+      { href: '#nilai', label: 'Prinsip kami' },
+      { href: '#kepemimpinan', label: 'Kepemimpinan' },
+      { href: '#tata-kelola', label: 'Tata kelola' },
+    ]}
+  />
+  <section
+    class="wrap section split-layout company-story"
+    id="page-content"
+    data-reveal
+  >
+    <Media hero />
+    <div>
+      <span class="eyebrow">PROFIL PERUSAHAAN</span>
+      <h2>Sumber daya dengan perspektif panjang.</h2>
+      <p>
+        PT Ahli Maju merupakan perusahaan pertambangan Indonesia. Situs ini
+        memperkenalkan kerangka profil perusahaan yang akan dilengkapi dengan
+        informasi resmi.
+      </p>
+      <p>
+        Pengelolaan sumber daya memerlukan ketelitian teknis, kepedulian
+        terhadap manusia, dan tanggung jawab pada lingkungan. Ketiganya menjadi
+        arah narasi perusahaan di dalam profil ini.
+      </p>
+      <p class="notice">
+        Materi profil, sejarah, dan komitmen merupakan draf untuk persetujuan
+        perusahaan.
+      </p>
+    </div>
+  </section>
+  <section class="wrap section two-column company-direction" data-reveal>
+    <div>
+      <span class="eyebrow">VISI / DRAF</span>
+      <h2>Membangun nilai yang melampaui hari ini.</h2>
+      <p>
+        Menjadi bagian dari pengelolaan sumber daya yang bertanggung jawab dan
+        memberi nilai jangka panjang.
+      </p>
+    </div>
+    <div>
+      <span class="eyebrow">MISI / DRAF</span>
+      <ol class="editorial-list">
+        <li>
+          Menempatkan keselamatan dan manusia dalam pengambilan keputusan.
+        </li>
+        <li>
+          Menjalankan pendekatan operasional yang terencana dan dapat ditinjau.
+        </li>
+        <li>Membangun dialog dan nilai bersama masyarakat.</li>
+        <li>Mengintegrasikan lingkungan dalam seluruh siklus pekerjaan.</li>
+      </ol>
+    </div>
+  </section>
+  <section class="subtle-surface" id="nilai">
+    <div class="wrap section">
+      <span class="eyebrow">NILAI YANG MEMBERI ARAH</span>
+      <h2>Cara kami melihat pekerjaan.</h2>
+      <div class="value-list">
+        {pillars.map((pillar) => (
+          <article>
+            <span class="eyebrow">{pillar.label}</span>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="wrap section" id="kepemimpinan" data-reveal>
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">KEPEMIMPINAN</span>
+        <h2>Manusia di balik arah perusahaan.</h2>
+      </div>
+      <p>
+        Nama, foto, jabatan, dan biografi akan ditampilkan setelah persetujuan
+        dan izin publikasi.
+      </p>
+    </div>
+    <div class="leadership-grid">
+      {['Direksi', 'Operasional', 'Tata kelola'].map((role) => (
+        <article>
+          <div class="profile-placeholder">
+            <span>PROFIL MENUNGGU PERSETUJUAN</span>
+          </div>
+          <h3>{role}</h3>
+          <p>Nama dan biografi belum tersedia.</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="wrap section two-column company-timeline" data-reveal>
+    <div>
+      <span class="eyebrow">PERJALANAN PERUSAHAAN</span>
+      <h2>
+        Setiap langkah
+        <br />
+        punya cerita.
+      </h2>
+      <p>
+        Tahun pendirian dan tonggak perusahaan menunggu dokumen terverifikasi.
+      </p>
+    </div>
+    <ol class="timeline">
+      {[
+        'Pendirian perusahaan',
+        'Pengembangan kapabilitas',
+        'Arah pertumbuhan berikutnya',
+      ].map((item, i) => (
+        <li>
+          <span>0{i + 1} / TAHUN BELUM DIISI</span>
+          <h3>{item}</h3>
+          <p>Informasi tonggak akan dilengkapi dari arsip resmi.</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="wrap section" id="tata-kelola" data-reveal>
+    <span class="eyebrow">TATA KELOLA</span>
+    <h2>
+      Kepercayaan dibangun
+      <br />
+      melalui kejelasan.
+    </h2>
+    <div class="two-column">
+      <p>
+        Kerangka tata kelola mencakup pengawasan, kepatuhan, etika bisnis, dan
+        mekanisme pelaporan. Dokumen final akan diterbitkan setelah ditinjau
+        oleh pihak berwenang.
+      </p>
+      <div class="document-list">
+        <span>
+          Kode etik <small>Menunggu dokumen</small>
+        </span>
+        <span>
+          Kebijakan kepatuhan <small>Menunggu dokumen</small>
+        </span>
+        <span>
+          Mekanisme pelaporan <small>Menunggu kanal resmi</small>
+        </span>
+      </div>
+    </div>
+  </section>
+  <ContactCTA />
+</SiteLayout>

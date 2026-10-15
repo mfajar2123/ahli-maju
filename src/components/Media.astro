@@ -1,0 +1,40 @@
+---
+import { Picture } from 'astro:assets';
+import quarry from '../assets/quarry.jpg';
+import operations from '../assets/operations.jpg';
+interface Props {
+  kind?: 'quarry' | 'operations';
+  hero?: boolean;
+  class?: string;
+  sizes?: string;
+}
+const {
+  kind = 'quarry',
+  hero = false,
+  class: className = '',
+  sizes,
+} = Astro.props;
+const source = kind === 'quarry' ? quarry : operations;
+const responsiveSizes =
+  sizes ??
+  (className.includes('wide-media')
+    ? '(max-width: 760px) calc(100vw - 40px), 90vw'
+    : '(max-width: 760px) calc(100vw - 40px), 48vw');
+---
+
+<figure class:list={['media', className]}>
+  <Picture
+    src={source}
+    formats={['avif', 'webp']}
+    widths={[400, 720, 1100, 1600]}
+    sizes={responsiveSizes}
+    alt={
+      kind === 'quarry'
+        ? 'Foto stok: ekskavator kuning di area quarry berbatu; bukan lokasi PT Ahli Maju.'
+        : 'Foto stok: alat berat dan fasilitas pengolahan di quarry; bukan operasi PT Ahli Maju.'
+    }
+    loading={hero ? 'eager' : 'lazy'}
+    fetchpriority={hero ? 'high' : 'auto'}
+  />
+  <figcaption>FOTO REFERENSI INDUSTRI · BUKAN OPERASI PT AHLI MAJU</figcaption>
+</figure>

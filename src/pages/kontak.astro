@@ -1,0 +1,71 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import { Mail, MapPin, Phone, Clock } from '@lucide/astro';
+---
+
+<SiteLayout title="Hubungi Kami">
+  <PageIntro
+    eyebrow="Kontak"
+    title="Mari memulai percakapan yang berarti."
+    description="Untuk informasi perusahaan, pertanyaan, dan kemungkinan kerja sama, temukan kanal komunikasi resmi di halaman ini."
+  />
+  <section class="wrap section split-layout contact-layout" data-reveal>
+    <div>
+      <span class="eyebrow">KONTAK PERUSAHAAN</span>
+      <h2>
+        Terhubung
+        <br />
+        dengan Ahli Maju.
+      </h2>
+      <p>
+        Detail kontak resmi belum disediakan. Kanal komunikasi akan diaktifkan
+        setelah dikonfirmasi perusahaan.
+      </p>
+      <dl class="contact-details">
+        <div>
+          <dt>
+            <Mail size={18} aria-hidden="true" /> Email
+          </dt>
+          <dd>Menunggu alamat email resmi</dd>
+        </div>
+        <div>
+          <dt>
+            <Phone size={18} aria-hidden="true" /> Telepon
+          </dt>
+          <dd>Menunggu nomor resmi</dd>
+        </div>
+        <div>
+          <dt>
+            <MapPin size={18} aria-hidden="true" /> Kantor
+          </dt>
+          <dd>Menunggu alamat terverifikasi</dd>
+        </div>
+        <div>
+          <dt>
+            <Clock size={18} aria-hidden="true" /> Jam operasional
+          </dt>
+          <dd>Menunggu konfirmasi perusahaan</dd>
+        </div>
+      </dl>
+      <p class="form-note">
+        Kebijakan pengolahan data akan ditampilkan setelah ditinjau.{' '}
+        <a class="text-link" href="/privasi">
+          Status kebijakan privasi
+        </a>
+      </p>
+    </div>
+    <InquiryForm />
+  </section>
+  <section class="wrap section contact-location" data-reveal>
+    <div class="location-placeholder">
+      <span class="eyebrow">LOKASI KANTOR</span>
+      <h3>Ruang untuk peta kantor resmi.</h3>
+      <p>
+        Alamat, koordinat, dan petunjuk kunjungan akan tersedia setelah
+        verifikasi. Tidak ada layanan peta pihak ketiga yang dimuat.
+      </p>
+    </div>
+  </section>
+</SiteLayout>

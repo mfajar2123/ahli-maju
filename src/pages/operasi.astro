@@ -1,0 +1,162 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import Media from '../components/Media.astro';
+import ContactCTA from '../components/sections/ContactCTA.astro';
+import PageNav from '../components/sections/PageNav.astro';
+---
+
+<SiteLayout title="Operasi">
+  <PageIntro
+    eyebrow="Operasi"
+    title="Ketelitian dari awal. Keandalan di setiap tahap."
+    description="Melihat pertambangan sebagai satu siklus: dari memahami bumi, mengendalikan pekerjaan, hingga merencanakan pemulihan."
+  />
+  <PageNav
+    links={[
+      { href: '#page-content', label: 'Sumber daya' },
+      { href: '#siklus', label: 'Siklus kerja' },
+      { href: '#lokasi', label: 'Wilayah' },
+      { href: '#keselamatan', label: 'Keselamatan' },
+    ]}
+  />
+  <section class="wrap section two-column" id="page-content" data-reveal>
+    <div>
+      <span class="eyebrow">FOKUS KOMODITAS</span>
+      <h2>
+        Berangkat dari
+        <br />
+        pemahaman sumber daya.
+      </h2>
+    </div>
+    <div>
+      <p>
+        Karakter geologi, kualitas material, dan kebutuhan pengelolaan berbeda
+        pada setiap komoditas. Pendekatan perlu mengikuti kondisi sumber daya
+        dan ruang lingkup yang disetujui.
+      </p>
+      <div class="notice">
+        Komoditas, izin, kapasitas produksi, dan cakupan layanan belum
+        diberikan. Informasi ini tidak diklaim sebagai fakta operasional.
+      </div>
+    </div>
+  </section>
+  <section class="subtle-surface" id="siklus">
+    <div class="wrap section">
+      <span class="eyebrow">SIKLUS PERTAMBANGAN / KERANGKA REFERENSI</span>
+      <h2>Satu siklus. Banyak tanggung jawab.</h2>
+      <ol class="process-list">
+        {[
+          [
+            'Kajian & perencanaan',
+            'Memahami data dasar, kondisi geologi, dan risiko pekerjaan.',
+          ],
+          [
+            'Persiapan area',
+            'Menyelaraskan rencana kerja, kesiapan tim, dan pengendalian area.',
+          ],
+          [
+            'Pengelolaan material',
+            'Menghubungkan pergerakan material, kualitas, dan pengawasan proses.',
+          ],
+          [
+            'Pemulihan & pemantauan',
+            'Merencanakan pascatambang dan evaluasi lingkungan sejak awal.',
+          ],
+        ].map(([title, text], i) => (
+          <li>
+            <span>0{i + 1}</span>
+            <div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <section class="wrap section split-layout" id="lokasi" data-reveal>
+    <div>
+      <span class="eyebrow">WILAYAH OPERASIONAL</span>
+      <h2>
+        Lokasi dengan
+        <br />
+        konteks yang jelas.
+      </h2>
+      <p>
+        Modul lokasi disiapkan untuk memuat area operasi, status kegiatan, dan
+        akses informasi yang telah disetujui.
+      </p>
+      <p>Lokasi aktual dan koordinat tidak ditampilkan sebelum diverifikasi.</p>
+    </div>
+    <div class="location-placeholder">
+      <span class="eyebrow">MODUL LOKASI</span>
+      <h3>Lokasi belum dipublikasikan.</h3>
+      <p>
+        Peta operasional akan tersedia setelah koordinat dan izin publikasi
+        dikonfirmasi.
+      </p>
+      <span class="coordinate-placeholder">KOORDINAT — / —</span>
+    </div>
+  </section>
+  <section class="wrap section split-layout equipment-section" data-reveal>
+    <div>
+      <Media kind="operations" />
+    </div>
+    <div>
+      <span class="eyebrow">ALAT & KAPABILITAS</span>
+      <h2>
+        Kesiapan yang
+        <br />
+        dapat diperiksa.
+      </h2>
+      <p>
+        Peralatan perlu sesuai dengan kondisi pekerjaan, didukung pemeriksaan,
+        pemeliharaan, dan operator yang kompeten.
+      </p>
+      <div class="document-list">
+        <span>
+          Perencanaan armada <small>Kerangka kapabilitas</small>
+        </span>
+        <span>
+          Pemeriksaan sebelum kerja <small>Kerangka kapabilitas</small>
+        </span>
+        <span>
+          Pemeliharaan terjadwal <small>Kerangka kapabilitas</small>
+        </span>
+      </div>
+      <p class="data-note">
+        Jenis, jumlah, dan kepemilikan alat menunggu daftar aset resmi.
+      </p>
+    </div>
+  </section>
+  <section class="safety-block" id="keselamatan">
+    <div class="wrap section two-column">
+      <div>
+        <span class="eyebrow">KESELAMATAN & PENGENDALIAN</span>
+        <h2>
+          Setiap orang.
+          <br />
+          Setiap keputusan.
+        </h2>
+      </div>
+      <div>
+        <p>
+          Pengendalian operasional perlu dimulai dengan identifikasi risiko,
+          komunikasi yang jelas, dan kewenangan menghentikan pekerjaan yang
+          tidak aman.
+        </p>
+        <ul class="editorial-list">
+          <li>Penilaian bahaya sebelum pekerjaan.</li>
+          <li>Kesiapan alat dan pengaturan lalu lintas area kerja.</li>
+          <li>Pengarahan tim dan prosedur tanggap darurat.</li>
+          <li>Evaluasi kondisi ketika pekerjaan berubah.</li>
+        </ul>
+        <small>
+          Kerangka referensi; kebijakan resmi menunggu persetujuan tim K3.
+        </small>
+      </div>
+    </div>
+  </section>
+  <ContactCTA />
+</SiteLayout>

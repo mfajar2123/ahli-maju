@@ -1,0 +1,97 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import { vacancies } from '../data/site';
+import PageNav from '../components/sections/PageNav.astro';
+---
+
+<SiteLayout title="Karier">
+  <PageIntro
+    eyebrow="Karier"
+    title="Pekerjaan yang berarti. Ruang untuk bertumbuh."
+    description="Bagi mereka yang membawa ketelitian, kepedulian, dan rasa tanggung jawab ke dalam pekerjaan."
+  />
+  <PageNav
+    links={[
+      { href: '#page-content', label: 'Bekerja bersama' },
+      { href: '#budaya', label: 'Budaya kerja' },
+      { href: '#lowongan', label: 'Peluang karier' },
+    ]}
+  />
+  <section class="wrap section two-column" id="page-content" data-reveal>
+    <div>
+      <span class="eyebrow">MANUSIA DI PUSAT PEKERJAAN</span>
+      <h2>
+        Maju bersama
+        <br />
+        dalam satu arah.
+      </h2>
+    </div>
+    <div>
+      <p>
+        Pekerjaan pertambangan membutuhkan beragam perspektif dan keahlian.
+        Keselamatan, rasa hormat, dan kemauan belajar menjadi fondasi budaya
+        kerja yang ingin diperkenalkan dalam profil perusahaan.
+      </p>
+      <p class="notice">
+        Draf proposisi pemberi kerja. Kebijakan ketenagakerjaan, fasilitas, dan
+        program pengembangan menunggu konfirmasi HR.
+      </p>
+    </div>
+  </section>
+  <section class="subtle-surface" id="budaya">
+    <div class="wrap section">
+      <span class="eyebrow">BUDAYA & KESELAMATAN / DRAF</span>
+      <div class="value-list">
+        {[
+          [
+            'Bekerja dengan aman',
+            'Setiap orang perlu memahami risiko, berkomunikasi, dan memiliki ruang untuk menyampaikan kekhawatiran.',
+          ],
+          [
+            'Belajar dari pekerjaan',
+            'Evaluasi dan berbagi pengetahuan memberi kesempatan untuk mengembangkan kompetensi.',
+          ],
+          [
+            'Menghargai kontribusi',
+            'Kerja sama tumbuh ketika keahlian dan sudut pandang setiap orang didengar.',
+          ],
+        ].map(([title, text]) => (
+          <article>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="wrap section" id="lowongan" data-reveal>
+    <span class="eyebrow">PELUANG BERKARIER</span>
+    <h2>Temukan langkah berikutnya.</h2>
+    {vacancies.length ? (
+      <div class="document-list">
+        {vacancies.map((job) => (
+          <a href={job.url}>
+            {job.title}
+            <span>{job.location}</span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <h3>Belum ada lowongan terverifikasi.</h3>
+        <p>
+          Daftar peluang akan ditampilkan setelah informasi posisi dan kanal
+          rekrutmen resmi tersedia.
+        </p>
+        <a class="button outline" href="/kontak">
+          Informasi kontak perusahaan
+        </a>
+      </div>
+    )}
+    <p class="data-note">
+      Kanal pengiriman lamaran belum dikonfigurasi. Jangan mengirim CV atau data
+      pribadi melalui formulir pratinjau.
+    </p>
+  </section>
+</SiteLayout>

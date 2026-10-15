@@ -1,0 +1,168 @@
+---
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+---
+
+<form
+  class="inquiry-form"
+  id="inquiry-form"
+  novalidate
+  aria-describedby="form-disclosure"
+>
+  <h2>Percakapan dimulai di sini.</h2>
+  <p class="form-note" id="form-disclosure">
+    Formulir pratinjau: pengiriman belum tersedia. Jangan masukkan data
+    sensitif. Informasi yang Anda isi tidak dikirim atau disimpan.
+  </p>
+  <div class="form-row">
+    <div class="field">
+      <Label htmlFor="name">Nama lengkap *</Label>
+      <Input
+        id="name"
+        name="name"
+        autoComplete="name"
+        required
+        minLength={2}
+        maxLength={100}
+        aria-describedby="name-error"
+      />
+      <p id="name-error" class="field-error" hidden></p>
+    </div>
+    <div class="field">
+      <Label htmlFor="email">Email *</Label>
+      <Input
+        id="email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        maxLength={254}
+        aria-describedby="email-error"
+      />
+      <p id="email-error" class="field-error" hidden></p>
+    </div>
+  </div>
+  <div class="field">
+    <Label htmlFor="company">Perusahaan / organisasi</Label>
+    <Input
+      id="company"
+      name="company"
+      autoComplete="organization"
+      maxLength={150}
+    />
+  </div>
+  <div class="field">
+    <label for="topic">Topik pertanyaan *</label>
+    <select id="topic" name="topic" required aria-describedby="topic-error">
+      <option value="">Pilih topik</option>
+      <option>Kerja sama bisnis</option>
+      <option>Informasi perusahaan</option>
+      <option>Keberlanjutan</option>
+      <option>Karier</option>
+      <option>Lainnya</option>
+    </select>
+    <p class="field-error" id="topic-error" hidden></p>
+  </div>
+  <div class="field">
+    <Label htmlFor="message">Pesan *</Label>
+    <Textarea
+      id="message"
+      name="message"
+      required
+      minLength={20}
+      maxLength={3000}
+      aria-describedby="message-help message-error"
+    />
+    <p id="message-help" class="form-note">
+      Minimal 20 karakter. Maksimal 3.000 karakter.
+    </p>
+    <p class="field-error" id="message-error" hidden></p>
+  </div>
+  <div class="sr-only" aria-hidden="true">
+    <label for="website">Biarkan kolom ini kosong</label>
+    <input id="website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+  <Button type="button" id="form-submit" disabled>
+    Cek pesan · belum dapat dikirim
+  </Button>
+  <noscript>
+    <p class="form-note">
+      JavaScript diperlukan untuk pemeriksaan pesan. Pengiriman tetap belum
+      tersedia.
+    </p>
+  </noscript>
+  <div
+    class="form-status"
+    id="form-status"
+    role="status"
+    tabindex="-1"
+    hidden
+  ></div>
+</form>
+<script>
+  const form = document.querySelector<HTMLFormElement>('#inquiry-form');
+  const button = document.querySelector<HTMLButtonElement>('#form-submit');
+  const status = document.querySelector<HTMLElement>('#form-status');
+  if (form && button && status) {
+    button.disabled = false;
+    button.removeAttribute('aria-disabled');
+    button.removeAttribute('data-disabled');
+    button.removeAttribute('tabindex');
+    const names = ['name', 'email', 'topic', 'message'];
+    const validate = (name: string) => {
+      const field = form.elements.namedItem(name) as
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+      const error = document.getElementById(`${name}-error`);
+      let message = '';
+      if (!field.value.trim()) message = 'Kolom ini perlu diisi.';
+      else if (name === 'name' && field.value.trim().length < 2)
+        message = 'Masukkan nama dengan minimal 2 karakter.';
+      else if (name === 'email' && !field.validity.valid)
+        message = 'Masukkan alamat email yang valid.';
+      else if (name === 'message' && field.value.trim().length < 20)
+        message = 'Pesan perlu memuat minimal 20 karakter.';
+      else if (!field.validity.valid)
+        message = 'Periksa kembali nilai pada kolom ini.';
+      field.setAttribute('aria-invalid', String(Boolean(message)));
+      if (error) {
+        error.textContent = message;
+        error.hidden = !message;
+      }
+      return !message;
+    };
+    names.forEach((name) => {
+      const field = form.elements.namedItem(name) as HTMLElement;
+      field.addEventListener('blur', () => validate(name));
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') validate(name);
+        status.hidden = true;
+      });
+    });
+    const check = () => {
+      const invalid = names.filter((name) => !validate(name));
+      if (invalid.length) {
+        status.hidden = false;
+        status.textContent =
+          'Periksa kolom yang ditandai. Pesan belum dikirim.';
+        (form.elements.namedItem(invalid[0]!) as HTMLElement).focus();
+        return;
+      }
+      if ((form.elements.namedItem('website') as HTMLInputElement).value) {
+        status.hidden = false;
+        status.textContent = 'Pemeriksaan gagal. Pesan belum dikirim.';
+        return;
+      }
+      status.hidden = false;
+      status.textContent =
+        'Format pesan sudah sesuai. Pesan belum dikirim karena layanan pengiriman belum dikonfigurasi.';
+      status.focus();
+    };
+    button.addEventListener('click', check);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      check();
+    });
+  }
+</script>

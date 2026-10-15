@@ -1,0 +1,17 @@
+---
+interface Props {
+  links: { href: string; label: string }[];
+}
+const { links } = Astro.props;
+---
+
+<nav class="chapter-navigation" aria-label="Bagian halaman">
+  <div class="wrap">
+    {links.map((link) => (
+      <a href={link.href}>
+        {link.label}
+        <span aria-hidden="true">↘</span>
+      </a>
+    ))}
+  </div>
+</nav>

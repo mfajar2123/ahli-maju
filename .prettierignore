@@ -1,0 +1,8 @@
+node_modules
+.astro
+dist
+pnpm-lock.yaml
+test-results
+playwright-report
+artifacts
+.install-backup
